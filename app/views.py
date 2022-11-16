@@ -108,5 +108,23 @@ def delete_item():
     return jsonify({'result': 'ok'})
 
 
+@app.route("/add_item/", methods=['POST'])
+def add_item():
+    data = request.json
+    if not data or 'id' not in session:
+        return jsonify({'result': 'bad'})
+
+    for prop in ['server', 'name', 'desc', 'price', 'photo']:
+        if prop not in data:
+            return jsonify({'result': 'bad'})
+
+    users = db.get_users_with_id(session['id'])
+    if len(users) != 1 or not users[0]['isadmin'] or not data['price'].isnumeric():
+        return jsonify({'result': 'bad'})
+
+    db.add_item(data['name'], data['desc'], data['server'], int(data['price']), data['photo'])
+    return jsonify({'result': 'ok'})
+
+
 
 

@@ -50,3 +50,7 @@ class DataBase:
 
     def delete_item(self, item_id):
         self.execute('delete from items where id=%s', (item_id, ))
+
+    def add_item(self, name, description, server, pennies_price, photo_filename):
+        self.execute("insert into items (name, description, server, penniesPrice, photoFilename) values "
+                     "(%s, %s, %s, %s, %s)", (name, description, server, pennies_price, photo_filename))
